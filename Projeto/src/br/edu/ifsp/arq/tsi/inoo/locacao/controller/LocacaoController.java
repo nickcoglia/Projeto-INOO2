@@ -34,10 +34,11 @@ public class LocacaoController {
         return valorDiaria * numeroDiarias;
     }
 
-    public static void devolucao(br.edu.ifsp.arq.tsi.inoo.locacao.model.Locacao locacao) {
-        locacao.setEstadoDevolucao(true);
+    public static void devolucao(br.edu.ifsp.arq.tsi.inoo.locacao.model.Locacao locacao, int indexCarro) {
+        locacao.setEstadoDevolucao(indexCarro, true);
         locacao.setDataDevolucao(LocalDate.now());
     }
+    
 
     public boolean verificarEstadoCarro(Locacao locacao) {
         return locacao.isEstadoDevolucao();
