@@ -7,14 +7,16 @@ import java.util.ArrayList;
 public class Locacao {
     private static int contadorNumeracao = 1;
 
-    private int numero;
-    private LocalDate dataRealizacao;
-    private int numeroDiarias;
-    private LocalDate dataDevolucaoMaxima;
-    private LocalDate dataDevolucao;
-    private ArrayList<PessoaFisica> pessoasFisicas;
-    private ArrayList<PessoaJuridica> pessoasJuridicas;
-    private ArrayList<Carro> carros;
+    protected int numero;
+    protected LocalDate dataRealizacao;
+    protected int numeroDiarias;
+    protected LocalDate dataDevolucaoMaxima;
+    protected LocalDate dataDevolucao;
+    protected ArrayList<PessoaFisica> pessoasFisicas;
+    protected ArrayList<PessoaJuridica> pessoasJuridicas;
+    protected ArrayList<Carro> carros;
+    protected boolean devolvido; // Adicionando um campo para controlar o estado de devolução
+
 
     public Locacao(LocalDate dataRealizacao, int numeroDiarias) {
         this.numero = contadorNumeracao++;
@@ -29,6 +31,7 @@ public class Locacao {
     }
 
     public Locacao(PessoaFisica pessoaFisica, Carro carroSelecionado, LocalDate now) {
+        this.numero = contadorNumeracao++;
         this.pessoasFisicas = new ArrayList<>();
         this.pessoasJuridicas = new ArrayList<>();
         this.carros = new ArrayList<>();
@@ -38,6 +41,7 @@ public class Locacao {
     }
 
     public Locacao(PessoaJuridica pessoaJuridica, Carro carroSelecionado, LocalDate now) {
+        this.numero = contadorNumeracao++;
         this.pessoasFisicas = new ArrayList<>();
         this.pessoasJuridicas = new ArrayList<>();
         this.carros = new ArrayList<>();
@@ -69,10 +73,17 @@ public class Locacao {
         return dataRealizacao; // Retorna a data de realização da locação
     }
 
-    public void setEstadoDevolucao(boolean estado) {
-        Object indexCarro;
+    public LocalDate getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public LocalDate getDataDevolucaoMaxima() {
+        return dataDevolucaoMaxima;
+    }
+    
+    public void setEstadoDevolucao(int indexCarro, boolean estado) {
         if (indexCarro >= 0 && indexCarro < carros.size()) {
-            carrosDevolvidos.set(indexCarro, estado);
+            carros.get(indexCarro).setDisponivel(estado);
         } else {
             System.out.println("Índice de carro inválido!");
         }
@@ -92,9 +103,22 @@ public class Locacao {
     }
 
     public boolean locacaoCompleta() {
-        return dataDevolucao != null && carros.size() == dataDevolucao.size();
+        for (Carro carro : carros) {
+            if (carro.getDataDevolucao() == null) {
+                return false; // Se algum carro não foi devolvido, a locação não está completa
+            }
+        }
+        return true; // Todos os carros foram devolvidos, locação completa
+    }
+    
+
+    public boolean isDevolvido() {
+        return devolvido;
     }
 
+    public void setDevolvido(boolean devolvido) {
+        this.devolvido = devolvido;
+    }
 
     @Override
     public String toString() {
@@ -111,11 +135,14 @@ public class Locacao {
     }
 
     public int getNumero() {
-        return 0;
+        return numero;
     }
 
-    public void setDataDevolucao(LocalDate now) {
+    public void setDataDevolucao(LocalDate dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
+    }
+
+    public void setValorTotal(double d) {
     }
     
-   
 }
