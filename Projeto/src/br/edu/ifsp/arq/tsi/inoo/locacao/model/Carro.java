@@ -77,6 +77,10 @@ public class Carro {
         return arCondicionado;
     }
 
+    public boolean isDisponivel() {
+        return estado;
+    }
+
     public void setArCondicionado(boolean arCondicionado) {
         this.arCondicionado = arCondicionado; // Removido 'false;' antes da atribuição correta
     }
@@ -105,5 +109,9 @@ public class Carro {
     }
 
     public void setDisponivel(boolean b) {
+    }
+
+    public Object getDataDevolucao() {
+        return null;
     }
 }
