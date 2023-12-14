@@ -5,14 +5,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//import br.edu.ifsp.arq.tsi.inoo.locacao.controller.LocacaoController;
-//import br.edu.ifsp.arq.tsi.inoo.locacao.controller.CarrosController;
-//import br.edu.ifsp.arq.tsi.inoo.locacao.controller.PessoaController;
 import br.edu.ifsp.arq.tsi.inoo.locacao.model.Carro;
 import br.edu.ifsp.arq.tsi.inoo.locacao.model.Locacao;
 import br.edu.ifsp.arq.tsi.inoo.locacao.model.PessoaFisica;
 import br.edu.ifsp.arq.tsi.inoo.locacao.model.PessoaJuridica;
-//import br.edu.ifsp.arq.tsi.inoo.locacao.controller.LocacaoController;;
 
 public class App {
     public static void main(String[] args) {
@@ -34,77 +30,21 @@ public class App {
             System.out.println("6. Gerar Relatório");
             System.out.println("7. Sair do Programa");
 
-            System.out.println("Escolha uma opção:");
+            System.out.println("\nEscolha uma opção:");
 
             int opcao = scanner.nextInt();
             scanner.nextLine(); // Limpar o buffer
 
             switch (opcao) {
                 case 1:
-                    boolean cpfDuplicado = true;
-                    while (cpfDuplicado) {
-                        System.out.println("Digite o nome da Pessoa Física:");
-                        String nomePF = scanner.nextLine();
-                        System.out.println("Digite o CPF da Pessoa Física:");
-                        String cpf = scanner.nextLine();
-
-                        try {
-                            PessoaFisica pessoaFisica = new PessoaFisica(1, nomePF, cpf);
-                            pessoasFisicasLocacao.add(pessoaFisica);
-                            System.out.println("Pessoa Física cadastrada com sucesso: " + pessoaFisica);
-                            cpfDuplicado = false;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Erro: " + e.getMessage());
-                            System.out.println("Por favor, digite um CPF válido!");
-                        }
-                    }
+                    cadastrarPessoaFisica(pessoasFisicasLocacao, scanner);
                     break;
                 case 2:
-                    boolean cnpjDuplicado = true;
-                    while (cnpjDuplicado) {
-                        System.out.println("Digite o nome da Pessoa Jurídica:");
-                        String nomePJ = scanner.nextLine();
-                        System.out.println("Digite o CNPJ da Pessoa Jurídica:");
-                        String cnpj = scanner.nextLine();
-
-                        if (verificarCnpjDuplicado(pessoasJuridicasLocacao, cnpj)) {
-                            System.out.println("CNPJ já cadastrado! Por favor, insira um CNPJ diferente!");
-                        } else {
-                            System.out.println("Digite o nome da empresa:");
-                            String nomeEmpresa = scanner.nextLine();
-                            PessoaJuridica pessoaJuridica = new PessoaJuridica(1, nomePJ, cnpj, nomeEmpresa);
-                            pessoasJuridicasLocacao.add(pessoaJuridica);
-                            System.out.println("Pessoa Jurídica cadastrada com sucesso: " + pessoaJuridica);
-                            cnpjDuplicado = false;
-                        }
-                    }
+                    cadastrarPessoaJuridica(pessoasJuridicasLocacao, scanner);
                     break;
                 case 3:
-                    System.out.println("Digite a marca do carro:");
-                    String marca = scanner.nextLine();
-                    System.out.println("Digite o modelo do carro:");
-                    String modelo = scanner.nextLine();
-                    System.out.println("Digite o ano do carro:");
-                    int ano = scanner.nextInt();
-                    scanner.nextLine(); // Limpar o buffer
-                    System.out.println("Digite a placa do carro:");
-                    String placa = scanner.nextLine();
-                    System.out.println("Digite a capacidade de passageiros do carro:");
-                    int capacidadePassageiros = scanner.nextInt();
-                    scanner.nextLine(); // Limpar o buffer
-                    System.out.println("Digite o valor da diária do carro:");
-                    double valorDiaria = scanner.nextDouble();
-                    scanner.nextLine(); // Limpar o buffer
-                    System.out.println("O carro possui ar condicionado? (S/N):");
-                    String temArCondicionado = scanner.nextLine();
-                    boolean arCondicionado = temArCondicionado.equalsIgnoreCase("S");
-
-                    Carro carro = new Carro(1, marca, modelo, ano, placa, capacidadePassageiros, arCondicionado,
-                            valorDiaria, true);
-                    carrosLocacao.add(carro);
-                    System.out.println("Carro cadastrado com sucesso: " + carro);
+                    cadastrarCarro(carrosLocacao, scanner);
                     break;
-
                 case 4:
                     realizarLocacao(pessoasFisicasLocacao, pessoasJuridicasLocacao, carrosLocacao, locacoes, scanner);
                     break;
@@ -113,7 +53,7 @@ public class App {
                     break;
                 case 6:
                     exibirRelatorioLocacoes(locacoes);
-                    scanner.nextLine(); // Limpar o buffer
+                    scanner.nextLine();
                     break;
                 case 7:
                     System.out.println("Saindo do programa...");
@@ -122,10 +62,78 @@ public class App {
                 default:
                     System.out.println("Opção inválida! Por favor, escolha uma opção válida!");
                     break;
-
             }
         }
         scanner.close();
+    }
+
+    public static void cadastrarPessoaFisica(ArrayList<PessoaFisica> pessoasFisicasLocacao, Scanner scanner) {
+        boolean cpfDuplicado = true;
+        while (cpfDuplicado) {
+            System.out.println("\nDigite o nome da Pessoa Física:");
+            String nomePF = scanner.nextLine();
+            System.out.println("Digite o CPF da Pessoa Física:");
+            String cpf = scanner.nextLine();
+
+            try {
+                PessoaFisica pessoaFisica = new PessoaFisica(1, nomePF, cpf);
+                pessoasFisicasLocacao.add(pessoaFisica);
+                System.out.println("\nPessoa: " + pessoaFisica.getNome() + " cadastrada com sucesso!"); // Alteração
+                                                                                                        // aqui
+                cpfDuplicado = false;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Por favor, digite um CPF válido!");
+            }
+        }
+    }
+
+    public static void cadastrarPessoaJuridica(ArrayList<PessoaJuridica> pessoasJuridicasLocacao, Scanner scanner) {
+        boolean cnpjDuplicado = true;
+        while (cnpjDuplicado) {
+            System.out.println("\nDigite o nome da Pessoa Jurídica:");
+            String nomePJ = scanner.nextLine();
+            System.out.println("Digite o CNPJ da Pessoa Jurídica:");
+            String cnpj = scanner.nextLine();
+
+            if (verificarCnpjDuplicado(pessoasJuridicasLocacao, cnpj)) {
+                System.out.println("\nCNPJ já cadastrado! Por favor, insira um CNPJ diferente!");
+            } else {
+                System.out.println("Digite o nome da empresa:");
+                String nomeEmpresa = scanner.nextLine();
+                PessoaJuridica pessoaJuridica = new PessoaJuridica(1, nomePJ, cnpj, nomeEmpresa);
+                pessoasJuridicasLocacao.add(pessoaJuridica);
+                System.out.println("\nPessoa Jurídica:" + pessoaJuridica.getNome() + "cadastrada com sucesso!"); // Alteração
+                cnpjDuplicado = false;
+            }
+        }
+    }
+
+    public static void cadastrarCarro(ArrayList<Carro> carrosLocacao, Scanner scanner) {
+        System.out.println("\nDigite a marca do carro:");
+        String marca = scanner.nextLine();
+        System.out.println("Digite o modelo do carro:");
+        String modelo = scanner.nextLine();
+        System.out.println("Digite o ano do carro:");
+        int ano = scanner.nextInt();
+        scanner.nextLine(); // Limpar o buffer
+        System.out.println("Digite a placa do carro:");
+        String placa = scanner.nextLine();
+        System.out.println("Digite a capacidade de passageiros do carro:");
+        int capacidadePassageiros = scanner.nextInt();
+        scanner.nextLine(); // Limpar o buffer
+        System.out.println("Digite o valor da diária do carro:");
+        double valorDiaria = scanner.nextDouble();
+        scanner.nextLine(); // Limpar o buffer
+        System.out.println("O carro possui ar condicionado? (S/N):");
+        String temArCondicionado = scanner.nextLine();
+        boolean arCondicionado = temArCondicionado.equalsIgnoreCase("S");
+
+        Carro carro = new Carro(1, marca, modelo, ano, placa, capacidadePassageiros, arCondicionado,
+                valorDiaria, true);
+        carrosLocacao.add(carro);
+        System.out.println("\nCarro cadastrado com sucesso!");
+        System.out.println("Modelo: " + carro.getModelo() + " - Placa: " + carro.getPlaca());
     }
 
     public static void realizarLocacao(ArrayList<PessoaFisica> pessoasFisicasLocacao,
@@ -134,7 +142,7 @@ public class App {
             ArrayList<Locacao> locacoes,
             Scanner scanner) {
 
-        System.out.println("Selecione o tipo de cliente para a locação:");
+        System.out.println("\nSelecione o tipo de cliente para a locação:");
         System.out.println("1. Pessoa Física");
         System.out.println("2. Pessoa Jurídica");
         int tipoCliente = scanner.nextInt();
@@ -143,18 +151,19 @@ public class App {
         ArrayList<Carro> carrosDisponiveis = obterCarrosDisponiveis(carrosLocacao);
 
         if (carrosDisponiveis.isEmpty()) {
-            System.out.println("Nenhum carro disponível para locação no momento.");
+            System.out.println("\nNenhum carro disponível para locação no momento!");
             return;
         }
-    
-        System.out.println("Carros Disponíveis:");
+
+        System.out.println("\nCarros Disponíveis:");
         for (int i = 0; i < carrosDisponiveis.size(); i++) {
             Carro carro = carrosDisponiveis.get(i);
-            System.out.println((i + 1) + ". " + carro.getModelo() + " - Disponível: " + (carro.isDisponivel() ? "Sim" : "Não"));
+            System.out.println(
+                    (i + 1) + ". " + carro.getModelo() + " - Disponível: " + (carro.isDisponivel() ? "Sim" : "Não"));
         }
 
         if (tipoCliente == 1) {
-            System.out.println("Selecione a Pessoa Física para a locação:");
+            System.out.println("\nSelecione a Pessoa Física para a locação:");
             for (int i = 0; i < pessoasFisicasLocacao.size(); i++) {
                 System.out.println((i + 1) + ". " + pessoasFisicasLocacao.get(i).getNome());
             }
@@ -176,14 +185,14 @@ public class App {
                 locacoes.add(novaLocacao);
 
                 carroSelecionado.setDisponivel(false);
-                System.out.println("Locação realizada com sucesso para " + pessoaFisica.getNome() +
+                System.out.println("\nLocação realizada com sucesso para: " + pessoaFisica.getNome() +
                         " - Carro: " + carroSelecionado.getModelo() + " - Número da Locação: "
                         + novaLocacao.getNumero());
             } else {
-                System.out.println("Índice de carro inválido!");
+                System.out.println("\nErro ao realizar a Locação!");
             }
         } else if (tipoCliente == 2) {
-            System.out.println("Selecione a Pessoa Jurídica para a locação:");
+            System.out.println("\nSelecione a Pessoa Jurídica para a locação:");
             for (int i = 0; i < pessoasJuridicasLocacao.size(); i++) {
                 System.out.println((i + 1) + ". " + pessoasJuridicasLocacao.get(i).getNome());
             }
@@ -205,14 +214,14 @@ public class App {
                 locacoes.add(novaLocacaoPJ);
 
                 carroSelecionado.setDisponivel(false);
-                System.out.println("Locação realizada com sucesso para " + pessoaJuridica.getNome() +
+                System.out.println("\nLocação realizada com sucesso para: " + pessoaJuridica.getNome() +
                         " - Carro: " + carroSelecionado.getModelo() + " - Número da Locação: "
                         + novaLocacaoPJ.getNumero());
             } else {
-                System.out.println("Índice de carro inválido!");
+                System.out.println("\nErro ao realizar a Locação!");
             }
         } else {
-            System.out.println("Opção inválida!");
+            System.out.println("\nOpção inválida!");
         }
     }
 
@@ -245,35 +254,54 @@ public class App {
                 "Data Devolução",
                 "Valor Diária",
                 "Valor Total");
-
+    
         for (Locacao locacao : locacoes) {
-            String nome = locacao.getPessoa().getNome();
-            String modeloCarro = locacao.getCarro().getModelo();
-            LocalDate dataLocacao = locacao.getDataLocacao();
-            String dataLocacaoFormatada = dataLocacao.toString(); // Converte LocalDate para String no formato padrão
-
-            LocalDate dataDevolucao = locacao.getDataDevolucao();
-            String dataDevolucaoFormatada = (dataDevolucao != null) ? dataDevolucao.toString() : "Em aberto";
-            double valorDiaria = locacao.getCarro().getValorDiaria();
-            long diasLocados = ChronoUnit.DAYS.between(locacao.getDataLocacao(), LocalDate.now());
-            double valorTotal = valorDiaria * diasLocados;
-
-            System.out.printf("%-20s | %-15s | %-15s | %-12s | %-12.2f | %-10.2f\n",
-                    nome,
-                    modeloCarro,
-                    dataLocacaoFormatada,
-                    dataDevolucaoFormatada,
-                    valorDiaria,
-                    valorTotal);
+            exibirDetalhesLocacao(locacao);
         }
     }
-
+    
+    private static void exibirDetalhesLocacao(Locacao locacao) {
+        String nomeCliente = obterNomeCliente(locacao);
+        String modeloCarro = locacao.getCarro().getModelo();
+        String dataLocacao = formatarData(locacao.getDataLocacao());
+        String dataDevolucao = formatarDataDevolucao(locacao.getDataDevolucao());
+        double valorDiaria = locacao.getCarro().getValorDiaria();
+        double valorTotal = calcularValorTotal(locacao);
+    
+        System.out.printf("%-20s | %-15s | %-15s | %-12s | %-12.2f | %-10.2f\n",
+                nomeCliente,
+                modeloCarro,
+                dataLocacao,
+                dataDevolucao,
+                valorDiaria,
+                valorTotal);
+    }
+    
+    private static String obterNomeCliente(Locacao locacao) {
+        return locacao.getPessoa().getNome();
+    }
+    
+    private static String formatarData(LocalDate data) {
+        return (data != null) ? data.toString() : "Em aberto";
+    }
+    
+    private static String formatarDataDevolucao(LocalDate data) {
+        return (data != null) ? data.toString() : "Não devolvido";
+    }
+    
+    private static double calcularValorTotal(Locacao locacao) {
+        LocalDate dataAtual = LocalDate.now();
+        LocalDate dataDevolucao = (locacao.getDataDevolucao() != null) ? locacao.getDataDevolucao() : dataAtual;
+        long diasLocados = ChronoUnit.DAYS.between(locacao.getDataLocacao(), dataDevolucao);
+        return locacao.getCarro().getValorDiaria() * diasLocados;
+    }
+    
     private static void realizarDevolucao(ArrayList<Locacao> locacoes, ArrayList<Carro> carrosLocacao) {
         try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Informe o número da locação a ser devolvida: ");
+            System.out.println("\nInforme o número da locação a ser devolvida: ");
             int numeroLocacao = scanner.nextInt();
             scanner.nextLine(); // Limpar o buffer
-    
+
             Locacao locacaoEncontrada = null;
             for (Locacao locacao : locacoes) {
                 if (locacao.getNumero() == numeroLocacao) {
@@ -281,28 +309,28 @@ public class App {
                     break;
                 }
             }
-    
+
             if (locacaoEncontrada != null) {
                 if (!locacaoEncontrada.isDevolvido()) {
                     System.out.println("Informe a data de devolução (no formato yyyy-mm-dd): ");
                     String dataDevolucaoStr = scanner.nextLine();
                     LocalDate dataDevolucao = LocalDate.parse(dataDevolucaoStr);
-    
+
                     locacaoEncontrada.setDataDevolucao(dataDevolucao);
-    
+
                     // Marcar o carro associado à locação como disponível
                     Carro carroDevolvido = locacaoEncontrada.getCarro();
                     carroDevolvido.setDisponivel(true);
-    
+
                     locacaoEncontrada.setDevolvido(true);
-                    System.out.println("Devolução realizada com sucesso para a locação número " + numeroLocacao);
+                    System.out.println("\nDevolução:" + numeroLocacao + "realizada com sucesso!");
                 } else {
-                    System.out.println("Este carro já foi devolvido anteriormente.");
+                    System.out.println("\nEste carro já foi devolvido anteriormente!");
                 }
             } else {
-                System.out.println("Locação não encontrada!");
+                System.out.println("\nLocação não encontrada!");
             }
             scanner.close();
-        } 
+        }
     }
 }
