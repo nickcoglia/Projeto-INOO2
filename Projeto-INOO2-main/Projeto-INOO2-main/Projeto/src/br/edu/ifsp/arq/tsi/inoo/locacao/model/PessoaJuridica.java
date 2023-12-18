@@ -4,8 +4,8 @@ public class PessoaJuridica extends Pessoa {
     private String cnpj;
     private String razaoSocial;
 
-    public PessoaJuridica(int codigo, String nome, String cnpj, String razaoSocial) {
-        super(codigo, nome);
+    public PessoaJuridica(String nome, String cnpj, String razaoSocial) {
+        super(nome);
         this.cnpj = cnpj;
         this.razaoSocial = razaoSocial;
     }
@@ -29,6 +29,5 @@ public class PessoaJuridica extends Pessoa {
     @Override
     public String toString() {
         return "Pessoa Jurídica = [código = " + getCodigo() + ", nome = " + getNome() + ", cnpj = " + cnpj + ", razaoSocial = " + razaoSocial + "]";
-        // Utilizei os métodos getCodigo() e getNome() da superclasse Pessoa para acessar esses atributos
     }
 }

@@ -3,7 +3,8 @@ package br.edu.ifsp.arq.tsi.inoo.locacao.model;
 import java.util.ArrayList;
 
 public class Carro {
-    protected int carroCodigo = 1; // Nome da variável em minúsculas
+    private static int proximoCodigo = 1;
+    protected int carroCodigo; // Nome da variável em minúsculas
     protected String marca;
     protected String modelo;
     protected int ano;
@@ -15,7 +16,7 @@ public class Carro {
 
     public Carro(int carroCodigo, String marca, String modelo, int ano, String placa, int quantidadePortas,
             boolean arCondicionado, double valorDiaria, boolean disponivel) {
-        this.carroCodigo = carroCodigo; // gerado automaticamente
+        this.carroCodigo = proximoCodigo++; // gerado automaticamente
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
@@ -113,5 +114,9 @@ public class Carro {
         return "Carro = [código = " + carroCodigo + ", marca = " + marca + ", modelo = " + modelo + ", ano = " + ano
                 + ", placa = " + placa + ", quantidadePortas=" + quantidadePortas + ", arCondicionado=" + arCondicionado
                 + ", valor diária = " + valorDiaria + ", disponível = " + disponivel + "]";
+    }
+
+    public String getCapacidadePassageiros() {
+        return null;
     }
 }

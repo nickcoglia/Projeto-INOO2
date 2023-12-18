@@ -30,4 +30,8 @@ public class CarrosController {
     public ArrayList<Carro> getCarros() {
             return carros;
         }
+
+    public double getValorDiaria() {
+        return 0;
+    }
     }

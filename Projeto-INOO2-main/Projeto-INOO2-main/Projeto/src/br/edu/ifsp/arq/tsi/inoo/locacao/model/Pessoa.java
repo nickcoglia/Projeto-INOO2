@@ -1,25 +1,25 @@
-// Pessoa class
 package br.edu.ifsp.arq.tsi.inoo.locacao.model;
 
 import java.util.ArrayList;
 
 public abstract class Pessoa {
-    protected int ClienteCodigo = 1; // Sequencial gerado automaticamente
+    protected static int proximoCodigo = 0; // Sequencial gerado automaticamente
+    protected int ClienteCodigo;
     protected String nome;
     protected ArrayList<Locacao> locacao;
 
-    public Pessoa(int ClienteCodigo, String nome) {
-        this.ClienteCodigo = ClienteCodigo;
+    public Pessoa(String nome) {
+        this.ClienteCodigo = proximoCodigo++;
         this.nome = nome;
         this.locacao = new ArrayList<>();
     }
 
-    public int getClienteCodigo() {
-        return ClienteCodigo;
+    public int getProximoCodigo() {
+        return proximoCodigo;
     }
 
-    public void setClienteCodigo(int codigo) {
-        this.ClienteCodigo = codigo;
+    public void setProximoCodigo(int codigo) {
+        proximoCodigo = codigo;
     }
 
     public String getNome() {

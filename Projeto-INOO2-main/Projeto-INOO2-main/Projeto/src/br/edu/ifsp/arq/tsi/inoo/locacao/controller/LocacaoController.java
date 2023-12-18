@@ -64,6 +64,10 @@ public class LocacaoController {
         public void setDataDevolucao(LocalDate dataDevolucao) {
             this.dataDevolucao = dataDevolucao;
         }
+
+        public int getNumeroDiarias() {
+            return 0;
+        }
     }
 
     public static br.edu.ifsp.arq.tsi.inoo.locacao.model.Locacao buscarLocacaoPorNumero(int numeroLocacao) {

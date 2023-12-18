@@ -1,3 +1,4 @@
+// PessoaFisica class
 package br.edu.ifsp.arq.tsi.inoo.locacao.model;
 
 import java.util.HashSet;
@@ -7,8 +8,8 @@ public class PessoaFisica extends Pessoa {
     private static Set<String> cpfsRegistrados = new HashSet<>();
     private String cpf;
 
-    public PessoaFisica(int codigo, String nome, String cpf) {
-        super(codigo, nome);
+    public PessoaFisica(String nome, String cpf) {
+        super(nome);
         if (!cpfJaRegistrado(cpf)) {
             this.cpf = cpf;
             cpfsRegistrados.add(cpf);

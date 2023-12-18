@@ -1,6 +1,7 @@
 package br.edu.ifsp.arq.tsi.inoo.locacao.model;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 
@@ -18,11 +19,11 @@ public class Locacao {
     protected boolean devolvido; // Adicionando um campo para controlar disponivel de devolução
 
 
-    public Locacao(LocalDate dataRealizacao, int numeroDiarias) {
+    public Locacao(Pessoa pessoa, Carro carroSelecionado, LocalDate dataRealizacao, int numeroDiarias) {
         this.numero = contadorNumeracao++;
         this.dataRealizacao = dataRealizacao;
         this.numeroDiarias = numeroDiarias;
-        this.dataDevolucaoMaxima = dataRealizacao.plusDays(numeroDiarias);
+        //this.dataDevolucaoMaxima = dataRealizacao.plusDays(numeroDiarias);
         this.dataDevolucao = null;
 
         this.pessoasFisicas = new ArrayList<>();
@@ -38,6 +39,9 @@ public class Locacao {
 
         this.pessoasFisicas.add(pessoaFisica);
         this.carros.add(carroSelecionado);
+        this.dataRealizacao = now;
+        this.dataDevolucaoMaxima = now.plusDays(numeroDiarias);
+        this.dataDevolucao = null;
     }
 
     public Locacao(PessoaJuridica pessoaJuridica, Carro carroSelecionado, LocalDate now) {
@@ -48,6 +52,9 @@ public class Locacao {
 
         this.pessoasJuridicas.add(pessoaJuridica);
         this.carros.add(carroSelecionado);
+        this.dataRealizacao = now;
+        this.dataDevolucaoMaxima = now.plusDays(numeroDiarias);
+        this.dataDevolucao = null;
     }
 
     
@@ -100,11 +107,17 @@ public class Locacao {
 
     public double calcularValorTotal() {
         double valorTotal = 0.0;
+
+        if (dataRealizacao != null && dataDevolucao != null) {
+            long diasLocados = ChronoUnit.DAYS.between(dataRealizacao, dataDevolucao);
+
         for (Carro carro : carros) {
-            valorTotal += carro.getValorDiaria() * numeroDiarias;
+            valorTotal += carro.getValorDiaria() * diasLocados;
         }
-        return valorTotal;
     }
+
+    return valorTotal;
+}
 
     public boolean locacaoCompleta() {
         for (Carro carro : carros) {
@@ -147,6 +160,18 @@ public class Locacao {
     }
 
     public void setValorTotal(double d) {
+    }
+
+    public Pessoa getCliente() {
+        return null;
+    }
+
+    public String getnDiarias() {
+        return null;
+    }
+
+    public LocalDate getDtDevolucao() {
+        return null;
     }
     
 }
